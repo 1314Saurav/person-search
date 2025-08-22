@@ -1,22 +1,227 @@
-# Person Search
+# Person Search App with Authentication
 
-## Description
+A modern Next.js 15 application with full-stack authentication, database integration, and CRUD operations for managing person records.
 
-Person Search is a Next.js application upgraded to leverage **Next.js 15.1** and **React 19**. It demonstrates advanced search functionality using Next.js Server Components and react-select's `AsyncSelect` component. Users can search for people from a pre-populated list and view detailed information about the selected person.
+## 🚀 Features
 
-The upgrade to Next.js 15.1 introduced significant breaking changes, including a shift in how `params` and `searchParams` are handled, leading to a complete redesign of the `user-search` component to fully align with Server Components.
+- **🔍 Advanced Search**: Search people by name with real-time results
+- **🔐 Authentication**: NextAuth.js with Google OAuth and credentials
+- **📊 Database**: PostgreSQL with Prisma ORM (Neon database ready)
+- **✏️ CRUD Operations**: Create, Read, Update, Delete person records
+- **🎨 Modern UI**: Tailwind CSS with shadcn/ui components
+- **🌙 Dark Mode**: Theme switching support
+- **📱 Responsive**: Mobile-first design
+- **⚡ Performance**: Next.js 15 with React 19
 
-## Features
+## 🛠️ Tech Stack
 
-- Asynchronous search functionality
-- Server-side filtering of user data
-- Server-rendered and hydrated client-side components
-- Single data fetch for improved performance
-- Responsive design using Tailwind CSS
-- Accessibility-focused UI components from Radix UI
-- Custom fonts (Geist Sans and Geist Mono)
-- Improved type safety with TypeScript
-- Modular and reusable component architecture
+- **Framework**: Next.js 15.5.0
+- **Runtime**: React 19
+- **Database**: PostgreSQL (Neon)
+- **ORM**: Prisma
+- **Authentication**: NextAuth.js v4
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI + shadcn/ui
+- **Form Handling**: React Hook Form + Zod
+- **Icons**: Lucide React
+
+## 🚀 Quick Deploy to Vercel
+
+### 1. Fork or Import this Repository
+
+Click the button below to deploy to Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/1314Saurav/person-search&env=DATABASE_URL,NEXTAUTH_SECRET,NEXTAUTH_URL,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET)
+
+### 2. Environment Variables
+
+Add these environment variables in Vercel:
+
+```env
+# Database
+DATABASE_URL="your-neon-postgres-connection-string"
+
+# NextAuth Configuration
+NEXTAUTH_URL="https://your-vercel-app.vercel.app"
+NEXTAUTH_SECRET="your-random-secret-key"
+
+# Google OAuth (Optional - for Google sign-in)
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+```
+
+### 3. Database Setup
+
+The app uses Neon PostgreSQL. After deployment:
+
+1. Run database migrations:
+   ```bash
+   npx prisma migrate deploy
+   ```
+
+2. Seed the database (optional):
+   ```bash
+   npm run db:seed
+   ```
+
+## 🏠 Local Development
+
+### Prerequisites
+
+- Node.js 18+ 
+- PostgreSQL database (or Neon account)
+- Google OAuth credentials (optional)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/1314Saurav/person-search.git
+   cd person-search
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   ```
+   Fill in your database and auth credentials.
+
+4. **Set up the database**
+   ```bash
+   npx prisma generate
+   npx prisma migrate dev
+   npm run db:seed
+   ```
+
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+Visit `http://localhost:3000` to see the app.
+
+## 📖 How to Use
+
+### Authentication
+
+1. **Sign In**: Click "Sign In" in the navbar
+2. **Google OAuth**: Use "Continue with Google" button
+3. **Credentials**: Use any email/password (demo mode)
+
+### Managing People
+
+1. **Search**: Type in the search box to find people
+2. **Add**: Click "Add User" to create new records
+3. **Edit**: Click "Edit" on any user card to modify details
+4. **Delete**: Click "Delete" to remove records
+
+## 🗄️ Database Schema
+
+### Users Table (App Data)
+```sql
+CREATE TABLE users (
+  id          TEXT PRIMARY KEY,
+  name        TEXT NOT NULL,
+  email       TEXT,
+  phoneNumber TEXT NOT NULL,
+  createdAt   TIMESTAMP DEFAULT NOW(),
+  updatedAt   TIMESTAMP DEFAULT NOW()
+);
+```
+
+### Auth Tables (NextAuth.js)
+- `auth_users` - Authentication user records
+- `Account` - OAuth account linking
+- `Session` - User sessions
+- `VerificationToken` - Email verification tokens
+
+## 🔧 Configuration
+
+### Google OAuth Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials
+5. Add authorized redirect URIs:
+   - `http://localhost:3000/api/auth/callback/google` (development)
+   - `https://your-domain.vercel.app/api/auth/callback/google` (production)
+
+### Database Migration
+
+For production deployment:
+```bash
+npx prisma migrate deploy
+```
+
+For development:
+```bash
+npx prisma migrate dev --name your-migration-name
+```
+
+## 📁 Project Structure
+
+```
+├── app/
+│   ├── actions/           # Server actions
+│   ├── api/              # API routes
+│   ├── auth/             # Authentication pages
+│   ├── components/       # App-specific components
+│   └── globals.css       # Global styles
+├── components/
+│   ├── ui/               # shadcn/ui components
+│   └── auth-provider.tsx # Auth context provider
+├── lib/
+│   ├── auth.ts          # NextAuth configuration
+│   ├── prisma.ts        # Prisma client
+│   └── utils.ts         # Utility functions
+├── prisma/
+│   ├── schema.prisma    # Database schema
+│   ├── migrations/      # Database migrations
+│   └── seed.ts         # Database seeding
+└── types/
+    └── next-auth.d.ts   # NextAuth type definitions
+```
+
+## 🚦 Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run db:seed` - Seed database with sample data
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Database Connection**: Ensure your `DATABASE_URL` is correct
+2. **Auth Errors**: Check `NEXTAUTH_SECRET` and `NEXTAUTH_URL`
+3. **Google OAuth**: Verify redirect URIs in Google Console
+4. **Build Errors**: Run `npm run build` locally first
+
+### Getting Help
+
+- Check the [Next.js documentation](https://nextjs.org/docs)
+- Visit [NextAuth.js docs](https://next-auth.js.org/)
+- Review [Prisma documentation](https://prisma.io/docs)
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+Built with ❤️ using Next.js 15, React 19, and modern web technologies.
 
 ## Technologies Used
 
