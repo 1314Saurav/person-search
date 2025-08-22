@@ -64,6 +64,12 @@ The app uses Neon PostgreSQL. After deployment:
    npm run db:seed
    ```
 
+### 4. Important Notes for Vercel Deployment
+
+- The app includes a `postinstall` script that runs `prisma generate` to ensure the Prisma client is properly generated during deployment
+- Make sure to add your Vercel domain to Google OAuth authorized redirect URIs: `https://your-app.vercel.app/api/auth/callback/google`
+- After deployment, you may need to run migrations manually if not using Prisma Migrate in production
+
 ## 🏠 Local Development
 
 ### Prerequisites
