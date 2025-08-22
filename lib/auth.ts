@@ -7,11 +7,15 @@ import CredentialsProvider from "next-auth/providers/credentials"
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    // Google OAuth Provider
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
+    // Google OAuth Provider - only add if credentials are available
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? [
+          GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          }),
+        ]
+      : []),
     
     // Credentials provider for email/password login
     CredentialsProvider({
@@ -44,15 +48,21 @@ export default NextAuth({
     signIn: "/auth/signin",
   },
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
   callbacks: {
-    async session({ session, user }: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-      if (session.user && user) {
-        session.user.id = user.id
+    async jwt({ token, user }: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+      if (user) {
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+      if (token && session.user) {
+        session.user.id = token.id
       }
       return session
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "fallback-secret-for-build",
 })
