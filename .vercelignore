@@ -3,11 +3,6 @@
 /.env
 /.env.local
 /prisma/migrations
-/mcp-server
-/app/test
-test-*.js
-test-*.mjs
-TEST-REPORT.md
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
