@@ -1,70 +1,122 @@
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Github, Linkedin, Twitter } from 'lucide-react'
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import { ArrowLeft, Github, Linkedin, Twitter, Users, BarChart3, Settings, Database, Shield, Zap } from 'lucide-react'
 
 function ProjectOverview() {
-  return (
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle>Project Overview</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="mb-4">
-          Person Search is a demonstration project showcasing the power of Next.js, React, and modern web technologies. 
-          It provides a simple yet effective interface for searching and displaying user information.
-        </p>
-        <p className="mb-4">
-          This project utilizes Next.js 15 with the App Router, React 19, TypeScript, and a variety of 
-          cutting-edge libraries to create a responsive and accessible user experience.
-        </p>
-        <p>
-          Key features include asynchronous search functionality, server-side filtering, 
-          and a dark mode toggle for user comfort.
-        </p>
-      </CardContent>
-    </Card>
-  )
-}
+  const features = [
+    { icon: Users, label: "User Management", description: "Complete CRUD operations for user data" },
+    { icon: BarChart3, label: "Analytics Dashboard", description: "Insights and data visualization" },
+    { icon: Database, label: "Database Integration", description: "Prisma ORM with PostgreSQL" },
+    { icon: Shield, label: "Authentication", description: "NextAuth.js with Google OAuth" },
+    { icon: Settings, label: "Management Tools", description: "Bulk operations and data export" },
+    { icon: Zap, label: "Real-time Search", description: "Fast and responsive filtering" }
+  ]
 
-function SocialLinks() {
+  const technologies = [
+    "Next.js 15", "React 19", "TypeScript", "Prisma", "NextAuth.js", 
+    "Tailwind CSS", "shadcn/ui", "PostgreSQL", "Vercel", "MCP"
+  ]
+
   return (
-    <div className="flex flex-wrap gap-4">
-      <Button asChild>
-        <Link href="https://www.linkedin.com/in/callumbir/" target="_blank" rel="noopener noreferrer">
-          <Linkedin className="mr-2 h-4 w-4" /> LinkedIn
-        </Link>
-      </Button>
-      <Button asChild variant="outline">
-        <Link href="https://github.com/gocallum" target="_blank" rel="noopener noreferrer">
-          <Github className="mr-2 h-4 w-4" /> GitHub
-        </Link>
-      </Button>
-      <Button asChild variant="secondary">
-        <Link href="https://x.com/callumbir">
-          <Twitter className="mr-2 h-4 w-4" /> Contact Me
-        </Link>
-      </Button>
+    <div className="grid gap-6 md:grid-cols-2">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-2">
+              <Users className="h-5 w-5 text-white" />
+            </div>
+            PersonDash Overview
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="mb-4 text-muted-foreground">
+            PersonDash is a comprehensive user management platform built with modern web technologies. 
+            It showcases advanced features including authentication, database integration, and analytics.
+          </p>
+          <div className="space-y-3">
+            {features.map((feature, index) => (
+              <div key={index} className="flex items-start gap-3">
+                <div className="bg-muted rounded-lg p-2">
+                  <feature.icon className="h-4 w-4 text-muted-foreground" />
+                </div>
+                <div>
+                  <div className="font-medium">{feature.label}</div>
+                  <div className="text-sm text-muted-foreground">{feature.description}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Technologies Used</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="mb-4 text-muted-foreground">
+            Built with cutting-edge technologies and best practices for modern web development.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {technologies.map((tech, index) => (
+              <Badge key={index} variant="secondary">
+                {tech}
+              </Badge>
+            ))}
+          </div>
+          <Separator className="my-4" />
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <div><strong>Frontend:</strong> Next.js 15 with React 19 and TypeScript</div>
+            <div><strong>Backend:</strong> Prisma ORM with PostgreSQL database</div>
+            <div><strong>Authentication:</strong> NextAuth.js with Google OAuth</div>
+            <div><strong>Styling:</strong> Tailwind CSS with shadcn/ui components</div>
+            <div><strong>Deployment:</strong> Vercel with automatic deployments</div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
 
 function DeveloperInfo() {
   return (
-    <Card className="mb-8">
+    <Card>
       <CardHeader>
         <CardTitle>About the Developer</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="mb-4">
-          Hi, I&apos;m <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">Callum Bir</code>, the developer behind Person Search. I&apos;m passionate about creating 
-          efficient, user-friendly web applications using the latest technologies.
-        </p>
-        <p className="mb-4">
-          This project serves as a demonstration of my skills in Next.js, React, and modern frontend development.
-          I&apos;m always looking to learn and improve, so feel free to reach out with any questions or feedback!
-        </p>
-        <SocialLinks />
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex-1">
+            <p className="mb-4 text-muted-foreground">
+              Hi, I&apos;m <span className="font-semibold text-foreground">Callum Bir</span>, the developer behind PersonDash. 
+              I&apos;m passionate about creating efficient, user-friendly web applications using the latest technologies.
+            </p>
+            <p className="mb-4 text-muted-foreground">
+              This project demonstrates full-stack development skills including database design, 
+              authentication systems, API development, and modern UI/UX principles.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Button asChild variant="default" size="sm">
+                <Link href="https://www.linkedin.com/in/callumbir/" target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="mr-2 h-4 w-4" /> LinkedIn
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="sm">
+                <Link href="https://github.com/gocallum" target="_blank" rel="noopener noreferrer">
+                  <Github className="mr-2 h-4 w-4" /> GitHub
+                </Link>
+              </Button>
+              <Button asChild variant="secondary" size="sm">
+                <Link href="https://x.com/callumbir" target="_blank" rel="noopener noreferrer">
+                  <Twitter className="mr-2 h-4 w-4" /> Contact
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )
@@ -72,16 +124,25 @@ function DeveloperInfo() {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">About Person Search</h1>
-        <ProjectOverview />
-        <DeveloperInfo />
-        <Button asChild variant="link" className="mt-4">
-          <Link href="/">
-            Back to Home
-          </Link>
-        </Button>
+    <div className="min-h-screen flex flex-col bg-background">
+      <main className="flex-grow container mx-auto px-4 py-8 max-w-6xl">
+        <div className="mb-8">
+          <Button asChild variant="ghost" size="sm" className="mb-4">
+            <Link href="/">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Dashboard
+            </Link>
+          </Button>
+          <h1 className="text-4xl font-bold mb-2">About PersonDash</h1>
+          <p className="text-xl text-muted-foreground">
+            A modern user management platform with analytics and authentication
+          </p>
+        </div>
+        
+        <div className="space-y-8">
+          <ProjectOverview />
+          <DeveloperInfo />
+        </div>
       </main>
     </div>
   )

@@ -35,6 +35,7 @@ export async function searchUsers(query: string): Promise<User[]> {
 }
 
 export async function addUser(data: Omit<User, 'id'>): Promise<User> {
+    console.log('Adding user with data:', data)
     const validatedData = userSchema.omit({ id: true }).parse(data)
     
     const newUser = await prisma.user.create({
@@ -45,6 +46,7 @@ export async function addUser(data: Omit<User, 'id'>): Promise<User> {
         },
     })
     
+    console.log('User created successfully:', newUser)
     revalidatePath('/')
     return {
         id: newUser.id,
