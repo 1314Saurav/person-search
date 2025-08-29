@@ -40,4 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# MCP server files (if accidentally created)
+mcp-server/
+**/mcp-server/**
+**/*mcp*
+
 /lib/generated/prisma
