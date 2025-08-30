@@ -3,6 +3,7 @@ import path from 'path';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  serverExternalPackages: ['@prisma/client', 'prisma'],
   webpack: (config, { isServer }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -10,17 +11,10 @@ const nextConfig: NextConfig = {
     };
     return config;
   },
-  pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
     ignoreBuildErrors: false,
   },
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
     ignoreDuringBuilds: false,
   },
 };

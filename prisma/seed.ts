@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 async function main() {
   // Clear existing data
-  await prisma.user.deleteMany()
+  await prisma.person.deleteMany()
 
   // Seed users
   const users = [
@@ -21,7 +21,7 @@ async function main() {
   ]
 
   for (const user of users) {
-    await prisma.user.create({
+    await prisma.person.create({
       data: user,
     })
   }

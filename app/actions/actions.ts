@@ -60,7 +60,7 @@ function convertPrismaUser(user: PrismaUser): User {
 }
 
 export async function searchUsers(query: string): Promise<User[]> {
-    const users = await prisma.user.findMany({
+    const users = await prisma.person.findMany({
         where: {
             OR: [
                 { name: { contains: query, mode: 'insensitive' } },
@@ -76,7 +76,7 @@ export async function searchUsers(query: string): Promise<User[]> {
 export async function addUser(data: { name: string; email: string; phone?: string }): Promise<User> {
     const validatedData = basicUserSchema.parse(data)
     
-    const newUser = await prisma.user.create({
+    const newUser = await prisma.person.create({
         data: {
             name: validatedData.name,
             email: validatedData.email,
@@ -89,7 +89,7 @@ export async function addUser(data: { name: string; email: string; phone?: strin
 }
 
 export async function deleteUser(id: string): Promise<void> {
-    await prisma.user.delete({
+    await prisma.person.delete({
         where: { id },
     })
     
@@ -97,7 +97,7 @@ export async function deleteUser(id: string): Promise<void> {
 }
 
 export async function updateUser(id: string, data: Partial<User>): Promise<User> {
-    const updatedUser = await prisma.user.update({
+    const updatedUser = await prisma.person.update({
         where: { id },
         data: data,
     })
@@ -107,7 +107,7 @@ export async function updateUser(id: string, data: Partial<User>): Promise<User>
 }
 
 export const getUserById = cache(async (id: string) => {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.person.findUnique({
         where: { id },
     })
     
@@ -116,7 +116,7 @@ export const getUserById = cache(async (id: string) => {
 })
 
 export async function getAllUsers(): Promise<User[]> {
-    const users = await prisma.user.findMany({
+    const users = await prisma.person.findMany({
         orderBy: { createdAt: 'desc' },
     })
     

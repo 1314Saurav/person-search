@@ -1,9 +1,14 @@
 {
-    "version": 2,
-    "buildCommand": "npm run build",
-    "installCommand": "npm install --force",
-    "framework": "nextjs",
-    "outputDirectory": ".next"
-  }
+  "version": 2,
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 10
+    }
+  },
+  "regions": ["syd1"]
+}
   
   

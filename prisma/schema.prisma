@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Account {
-  id                String   @id @default(cuid())
+  id                String @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -20,7 +20,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -30,10 +30,10 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model AuthUser {
+model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
@@ -41,8 +41,6 @@ model AuthUser {
   image         String?
   accounts      Account[]
   sessions      Session[]
-
-  @@map("auth_users")
 }
 
 model VerificationToken {
@@ -53,7 +51,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model User {
+model Person {
   id    String @id @default(cuid())
   name  String
   email String @unique
