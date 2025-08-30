@@ -68,7 +68,7 @@ export function UserForm({ form }: FormComponentProps) {
       />
       <FormField
         control={form.control}
-        name="phoneNumber"
+        name="phone"
         render={({ field, fieldState }) => (
           <FormItem>
             <FormLabel>Phone Number</FormLabel>

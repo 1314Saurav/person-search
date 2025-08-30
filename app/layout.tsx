@@ -5,7 +5,6 @@ import "./globals.css";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
-import AuthProvider from "@/components/auth-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Person Search App",
-  description: "A simple search app to find people by name",
+  title: "PersonDash - People Discovery Platform",
+  description: "A comprehensive dashboard for discovering and managing people profiles with advanced search and analytics.",
 };
 
 export default function RootLayout({
@@ -39,7 +38,6 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          <AuthProvider session={null}>
         <Navbar />
         <main className="flex-grow">
           {children}
@@ -47,7 +45,6 @@ export default function RootLayout({
         <Toaster />
 
         <Footer />
-        </AuthProvider>
         </ThemeProvider>
 
     </body>

@@ -34,7 +34,7 @@ export function UserDialog() {
       addDialogTitle="Add New User"
       dialogDescription="Fill out the form below to add a new user."
       submitButtonLabel="Save"
-      defaultValues={{ name: '', email: '', phoneNumber: '' }} // Default empty values
+      defaultValues={{ name: '', email: '', phone: '' }} // Default empty values
     />
   )
 }

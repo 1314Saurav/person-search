@@ -54,12 +54,27 @@ model VerificationToken {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  name        String
-  email       String?
-  phoneNumber String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("users")
+  id    String @id @default(cuid())
+  name  String
+  email String @unique
+  age   Int?
+  bio   String?
+  location String?
+  occupation String?
+  interests String[]
+  website String?
+  linkedin String?
+  twitter String?
+  github String?
+  experience String?
+  education String?
+  skills String[]
+  availableForWork Boolean @default(false)
+  preferredContact String @default("email")
+  profileImage String?
+  phone String?
+  company String?
+  jobTitle String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

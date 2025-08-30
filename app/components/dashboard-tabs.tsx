@@ -9,13 +9,7 @@ import { AnalyticsView } from './analytics-view';
 import { ManagementView } from './management-view';
 import UserSearch from './user-search';
 import { searchUsers } from '../actions/actions';
-
-interface User {
-  id: string;
-  name: string;
-  email?: string | null;
-  phoneNumber: string;
-}
+import { User } from '../actions/schemas';
 
 interface DashboardTabsProps {
   initialUsers: User[];

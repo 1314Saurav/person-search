@@ -1,107 +1,109 @@
-//app/actions/actions.ts
-
-'use server'
+﻿'use server'
 
 import { revalidatePath } from 'next/cache'
-import { User, userSchema } from './schemas'
+import { User, basicUserSchema } from './schemas'
 import { cache } from 'react'
 import { prisma } from '@/lib/prisma'
 
-export async function searchUsers(query: string): Promise<User[]> {
-    console.log('Searching users with query:', query)
-    
-    const users = await prisma.user.findMany({
-        where: {
-            name: {
-                contains: query,
-                mode: 'insensitive',
-            },
-        },
-        orderBy: {
-            name: 'asc',
-        },
-    })
-    
-    // Convert Prisma User to our User type
-    const convertedUsers: User[] = users.map((user: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
-        id: user.id,
-        name: user.name,
-        phoneNumber: user.phoneNumber,
-        email: user.email || undefined, // Convert null to undefined
-    }))
-    
-    console.log('Search results:', convertedUsers)
-    return convertedUsers
+type PrismaUser = {
+  id: string
+  name: string
+  email: string
+  age?: number | null
+  bio?: string | null
+  location?: string | null
+  occupation?: string | null
+  phone?: string | null
+  interests?: string[] | null
+  website?: string | null
+  linkedin?: string | null
+  twitter?: string | null
+  github?: string | null
+  experience?: string | null
+  education?: string | null
+  skills?: string[] | null
+  availableForWork?: boolean | null
+  preferredContact?: string | null
+  profileImage?: string | null
+  company?: string | null
+  jobTitle?: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 
-export async function addUser(data: Omit<User, 'id'>): Promise<User> {
-    console.log('Adding user with data:', data)
-    const validatedData = userSchema.omit({ id: true }).parse(data)
+function convertPrismaUser(user: PrismaUser): User {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    age: user.age || undefined,
+    bio: user.bio || undefined,
+    location: user.location || undefined,
+    occupation: user.occupation || undefined,
+    phone: user.phone || undefined,
+    interests: user.interests || undefined,
+    website: user.website || undefined,
+    linkedin: user.linkedin || undefined,
+    twitter: user.twitter || undefined,
+    github: user.github || undefined,
+    experience: user.experience || undefined,
+    education: user.education || undefined,
+    skills: user.skills || undefined,
+    availableForWork: user.availableForWork || undefined,
+    preferredContact: user.preferredContact || undefined,
+    profileImage: user.profileImage || undefined,
+    company: user.company || undefined,
+    jobTitle: user.jobTitle || undefined,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  }
+}
+
+export async function searchUsers(query: string): Promise<User[]> {
+    const users = await prisma.user.findMany({
+        where: {
+            OR: [
+                { name: { contains: query, mode: 'insensitive' } },
+                { email: { contains: query, mode: 'insensitive' } },
+            ]
+        },
+        orderBy: { createdAt: 'desc' },
+    })
+    
+    return users.map(convertPrismaUser)
+}
+
+export async function addUser(data: { name: string; email: string; phone?: string }): Promise<User> {
+    const validatedData = basicUserSchema.parse(data)
     
     const newUser = await prisma.user.create({
         data: {
             name: validatedData.name,
-            phoneNumber: validatedData.phoneNumber,
-            email: validatedData.email || null,
+            email: validatedData.email,
+            phone: validatedData.phone,
         },
     })
     
-    console.log('User created successfully:', newUser)
     revalidatePath('/')
-    return {
-        id: newUser.id,
-        name: newUser.name,
-        phoneNumber: newUser.phoneNumber,
-        email: newUser.email || undefined,
-    }
+    return convertPrismaUser(newUser)
 }
 
 export async function deleteUser(id: string): Promise<void> {
-    const user = await prisma.user.findUnique({
-        where: { id },
-    })
-    
-    if (!user) {
-        throw new Error(`User with id ${id} not found`)
-    }
-    
     await prisma.user.delete({
         where: { id },
     })
     
-    console.log(`User with id ${id} has been deleted.`)
     revalidatePath('/')
 }
 
-export async function updateUser(id: string, data: Partial<Omit<User, 'id'>>): Promise<User> {
-    const existingUser = await prisma.user.findUnique({
-        where: { id },
-    })
-    
-    if (!existingUser) {
-        throw new Error(`User with id ${id} not found`)
-    }
-    
-    const validatedData = userSchema.omit({ id: true }).partial().parse(data)
-    
+export async function updateUser(id: string, data: Partial<User>): Promise<User> {
     const updatedUser = await prisma.user.update({
         where: { id },
-        data: {
-            name: validatedData.name,
-            phoneNumber: validatedData.phoneNumber,
-            email: validatedData.email || null,
-        },
+        data: data,
     })
     
-    console.log(`User with id ${id} has been updated.`)
     revalidatePath('/')
-    
-    return {
-        id: updatedUser.id,
-        name: updatedUser.name,
-        phoneNumber: updatedUser.phoneNumber,
-        email: updatedUser.email || undefined,
-    }
+    return convertPrismaUser(updatedUser)
 }
 
 export const getUserById = cache(async (id: string) => {
@@ -110,11 +112,13 @@ export const getUserById = cache(async (id: string) => {
     })
     
     if (!user) return null
-    
-    return {
-        id: user.id,
-        name: user.name,
-        phoneNumber: user.phoneNumber,
-        email: user.email || undefined,
-    }
+    return convertPrismaUser(user)
 })
+
+export async function getAllUsers(): Promise<User[]> {
+    const users = await prisma.user.findMany({
+        orderBy: { createdAt: 'desc' },
+    })
+    
+    return users.map(convertPrismaUser)
+}

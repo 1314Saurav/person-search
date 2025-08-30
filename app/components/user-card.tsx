@@ -33,7 +33,7 @@ export default function UserCard({ user }: UserCardProps) {
       <CardContent className="grid gap-4">
         <div className="flex items-center gap-2">
           <Phone className="w-4 h-4 text-muted-foreground" />
-          <span>{user.phoneNumber}</span>
+          <span>{user.phone || 'No phone'}</span>
         </div>
         {user.email && (
           <div className="flex items-center gap-2">

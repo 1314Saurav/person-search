@@ -63,7 +63,8 @@ export function AnalyticsView() {
       
       // Analyze phone number area codes (assuming Australian mobile format)
       const areaCodes = users
-        .map(user => user.phoneNumber.substring(0, 4)) // First 4 digits
+        .filter(user => user.phone && user.phone.length >= 4)
+        .map(user => user.phone!.substring(0, 4)) // First 4 digits
         .reduce((acc, code) => {
           acc[code] = (acc[code] || 0) + 1;
           return acc;

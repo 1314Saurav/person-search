@@ -38,7 +38,7 @@ export function UserEditDialog({ user }: UserEditDialogProps) {
       defaultValues={{
         name: user.name,
         email: user.email,
-        phoneNumber: user.phoneNumber,
+        phone: user.phone,
       }}
     />
   )

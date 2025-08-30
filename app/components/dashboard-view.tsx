@@ -30,7 +30,7 @@ interface User {
   id: string;
   name: string;
   email?: string | null;
-  phoneNumber: string;
+  phone?: string;
 }
 
 interface DashboardStats {
@@ -65,7 +65,7 @@ export default function DashboardView() {
       filtered = filtered.filter(user =>
         user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.phoneNumber.includes(searchQuery)
+        (user.phone && user.phone.includes(searchQuery))
       );
     }
 
@@ -177,7 +177,7 @@ export default function DashboardView() {
               )}
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Phone className="h-3 w-3" />
-                <span>{user.phoneNumber}</span>
+                <span>{user.phone || 'No phone'}</span>
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Calendar className="h-3 w-3" />
@@ -224,7 +224,7 @@ export default function DashboardView() {
                 )}
                 <div className="flex items-center space-x-1">
                   <Phone className="h-3 w-3" />
-                  <span>{user.phoneNumber}</span>
+                  <span>{user.phone || 'No phone'}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Calendar className="h-3 w-3" />
